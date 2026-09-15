@@ -20,8 +20,10 @@
 * **Simulacro Físico de Memoria:** *Comprendí que las variables globales inmutables (const) se quedan en Flash (.rodata). Las globales inicializadas van a .data (consumen Flash y RAM), las globales vacías a .bss (solo consumen RAM al arrancar), y las locales viven temporalmente en el Stack mediante el movimiento electromagnético del Stack Pointer.*
 
 ### Día 2: Aritmética de Punteros
-* **Concepto asimilado:** *(Explica cómo el compilador sabe cuántos bytes físicos debe saltar en la RAM al sumar `+1` a un puntero, dependiendo de si el tipo es `uint8_t` o `uint32_t`).*
-* **Ejecución y Bloqueos:** *(Registra si generaste algún "Segmentation Fault" o leíste basura de la memoria al pasarte del límite físico del arreglo).*
+* **Aritmética vs Sintaxis:** *Comprobé que arreglo[i] es solo una ilusión visual. Físicamente, el compilador lo traduce como *(puntero + i).*
+* **El salto fisico:** *Al sumar +1 a un puntero, la CPU no avanza 1 byte literal. Avanza una cantidad de bytes igual al tamaño del tipo de dato (sizeof(tipo)). Un puntero uint32_t* saltará de a 4 bytes, mientras que un uint8_t* saltará de a 1 byte.*
+* **Simulacro de transferencia:** *Comprendí la regla de oro para el paso de datos. Uso copia directa para variables pequeñas (1 a 4 bytes) que solo necesitan ser leídas. Uso punteros para arreglos grandes (evitando clonar memoria masiva) o cuando necesito que una función actualice variables que viven en el main() (superando el límite de un solo return).*
+***Sobrescritura remota:** *Logré limpiar ruido de una señal mutando la memoria in-situ con *(ptr + i). Entendí que el tipo de puntero (uint8_t*) es lo que dicta el tamaño de la "mordida" física (1 byte) al momento de sobrescribir, evitando destruir la memoria adyacente.*
 
 ### Día 3: Lógica Circular y Wrap-around
 * **Concepto asimilado:** *(Demuestra matemáticamente por qué la operación `(head + 1) % capacity` garantiza que el índice nunca exceda los límites de la memoria reservada).*
