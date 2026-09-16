@@ -25,9 +25,11 @@
 * **Simulacro de transferencia:** *Comprendí la regla de oro para el paso de datos. Uso copia directa para variables pequeñas (1 a 4 bytes) que solo necesitan ser leídas. Uso punteros para arreglos grandes (evitando clonar memoria masiva) o cuando necesito que una función actualice variables que viven en el main() (superando el límite de un solo return).*
 ***Sobrescritura remota:** *Logré limpiar ruido de una señal mutando la memoria in-situ con *(ptr + i). Entendí que el tipo de puntero (uint8_t*) es lo que dicta el tamaño de la "mordida" física (1 byte) al momento de sobrescribir, evitando destruir la memoria adyacente.*
 
-### Día 3: Lógica Circular y Wrap-around
-* **Concepto asimilado:** *(Demuestra matemáticamente por qué la operación `(head + 1) % capacity` garantiza que el índice nunca exceda los límites de la memoria reservada).*
-* **Ejecución y Bloqueos:** *(Dibuja o explica un caso límite de la lógica: ¿qué ocurre exactamente con los índices cuando el búfer se llena por completo?).*
+### Día 3: Lógica Circular y Ring Buffers
+* **Supervivencia de Memoria:** *Comprobé que un sistema embebido requiere procesar datos infinitos en una memoria finita. La solución arquitectónica es el Búfer Circular (Ring Buffer), que sobrescribe los datos más antiguos garantizando un consumo de RAM constante y $O(1)$.*
+* **El Truco del Wrap-around:** *Entendí que el límite físico se controla matemáticamente con el operador módulo (%). Sin embargo, en hardware crítico, el tamaño del arreglo debe ser una potencia de 2 para reemplazar el % (lento) por una máscara de bits & (1 ciclo de reloj).*
+* **Structs y Padding:** *Descubrí que un struct en C no es abstracto, es un bloque de SRAM físico. El compilador inyecta "Padding" (memoria muerta) para que las variables calcen en múltiplos de 4 bytes, optimizando los ciclos de lectura de la CPU a costa de desperdiciar RAM.*
+* **Regla de Optimización:** *Para minimizar la pérdida de memoria en sistemas embebidos, siempre debo ordenar los elementos del struct desde el tipo de dato más grande al más pequeño.*
 
 ### Día 4: Contrato de Datos (Interfaz `.h`)
 * **Concepto asimilado:** *(Justifica por qué es vital separar la definición de la estructura de la asignación real de memoria. ¿Por qué el archivo de cabecera no reserva RAM?).*
