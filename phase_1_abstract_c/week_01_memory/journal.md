@@ -31,9 +31,9 @@
 * **Structs y Padding:** *Descubrí que un struct en C no es abstracto, es un bloque de SRAM físico. El compilador inyecta "Padding" (memoria muerta) para que las variables calcen en múltiplos de 4 bytes, optimizando los ciclos de lectura de la CPU a costa de desperdiciar RAM.*
 * **Regla de Optimización:** *Para minimizar la pérdida de memoria en sistemas embebidos, siempre debo ordenar los elementos del struct desde el tipo de dato más grande al más pequeño.*
 
-### Día 4: Contrato de Datos (Interfaz `.h`)
-* **Concepto asimilado:** *(Justifica por qué es vital separar la definición de la estructura de la asignación real de memoria. ¿Por qué el archivo de cabecera no reserva RAM?).*
-* **Ejecución y Bloqueos:** *(Registra problemas con las guardas de inclusión `#ifndef` o con la importación de `<stdint.h>` para asegurar tipos de tamaño exacto).*
+### Día 4: Arquitectura Modular, Contratos (.h) y el Linker
+* **Concepto asimilado:** *Es vital separar la definición (el .h) de la lógica ejecutable (el .c) porque en el diseño de hardware la gestión de SRAM es milimétrica. El archivo de cabecera funciona exclusivamente como un plano topológico y un contrato de confianza; no reserva un solo byte de RAM. Si un .h instanciara memoria física real, cada vez que otro módulo del sistema hiciera #include, el preprocesador duplicaría la variable, agotando la memoria disponible y provocando que el Linker colapse por "redefinición". El .h solo promete que la estructura existirá, permitiendo que el .c asigne la memoria en el silicio una única vez.*
+* **Ejecución y Bloqueos:** *El bloqueo principal fue el error fatal del Linker (referencia sin definir). Comprobé que el #include no conecta archivos mágicamente, solo deja un "agujero" en el compilador, siendo obligatorio inyectar todos los archivos .c en el comando gcc para que el Linker ensamble los binarios. También registré que usar <stdint.h> en los contratos es innegociable: garantiza que los datos de telemetría midan los bytes exactos (ej. uint16_t para ADC) independientemente de la arquitectura del procesador, previniendo corrupción de memoria. Finalmente, neutralicé un fallo de lógica secuencial donde el procesador sobrescribía silenciosamente una alarma térmica por no aislar los estados con un bloque else.*
 
 ### Día 5: Implementación Segura (`.c`)
 * **Concepto asimilado:** *(Explica tu estrategia de validación defensiva al inicio de cada función. ¿Por qué comprobar punteros nulos es el primer escudo contra un colapso del sistema?).*
