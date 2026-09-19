@@ -40,8 +40,8 @@
 * **Ejecución y Bloqueos:** *A nivel de compilación, me enfrenté a un error del sistema operativo (Permiso denegado) al usar -o /main, entendiendo que la barra / intenta escribir el binario en la raíz absoluta de Linux y no en la carpeta local. También choqué con el error implicit declaration of function 'printf', lo que me demostró que los archivos .c no heredan los #include del main; tuve que importar <stdio.h> explícitamente en el módulo. A nivel estructural, asimilé que sin el escudo NULL, cualquier intento de manipular los índices head o tail de un Ring Buffer sobre una memoria inexistente destruiría el sistema al instante.*
 
 ### Día 6: Pruebas de Estrés y Casos Límite (`main.c`)
-* **Concepto asimilado:** *(Resume cómo responde tu arquitectura de software cuando se intenta hacer `push` destructivo a un búfer lleno).*
-* **Ejecución y Bloqueos:** *(Copia y pega aquí la salida de la consola de tu ejecución demostrando que el desbordamiento fue interceptado y prevenido correctamente).*
+* **Concepto asimilado:** *Mi arquitectura de software responde a vectores destructivos (como inyectar un puntero NULL o valores de lectura desbordados como 65535) bloqueando la operación en la primera línea de ejecución antes de tocar la memoria. Asimilé que la validación del código no se hace con impresiones visuales, sino construyendo un entorno de pruebas con <assert.h>. Esta macro exige matemáticamente el resultado correcto ante casos límite (fronteras de activación y cero absoluto); si el módulo falla en un solo dígito, la aserción "mata" el programa y evita que el bug pase al silicio.*
+* **Ejecución y Bloqueos:** *Al compilar y ejecutar, no hubo bloqueos de aserción. Los casos límite de frontera (449 y 450) fueron evaluados como verdaderos de forma silenciosa por la máquina, y el ataque de estrés con el puntero inválido fue interceptado con éxito por la cláusula de guardia, demostrando que el módulo es seguro*
 
 ### Día 7: Auditoría y Cierre
 * **Revisión estática:** *(Anota las correcciones de seguridad o vulnerabilidades detectadas durante la revisión del código).*
