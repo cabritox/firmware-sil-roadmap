@@ -44,5 +44,10 @@
 * **Ejecución y Bloqueos:** *Al compilar y ejecutar, no hubo bloqueos de aserción. Los casos límite de frontera (449 y 450) fueron evaluados como verdaderos de forma silenciosa por la máquina, y el ataque de estrés con el puntero inválido fue interceptado con éxito por la cláusula de guardia, demostrando que el módulo es seguro*
 
 ### Día 7: Auditoría y Cierre
-* **Revisión estática:** *(Anota las correcciones de seguridad o vulnerabilidades detectadas durante la revisión del código).*
-* **Estado Final:** Código funcional integrado al control de versiones. Base sólida de manipulación de memoria establecida para comenzar con operaciones a nivel de bit (Semana 2).
+**Hitos y Cicatrices de Compilación:**
+*   **Mapeo de Memoria:** Comprobé visualmente (usando `%p` y el operador `&`) la inmensa distancia física que separa al *Data Segment* (variables globales) del *Stack* (memoria local destructible).
+*   **Navegación Pura:** Abandoné la abstracción de los corchetes `[]` para usar aritmética de punteros `*(ptr + offset)`, obligando a mi mente a dar "saltos de memoria" tal como lo hace la ALU del procesador.
+*   **Lógica Circular:** Implementé un mapeo matemático seguro (operador `%`) para reciclar arreglos estáticos de forma infinita, garantizando que un flujo continuo de datos de sensores nunca colapse la memoria disponible.
+*   **Modularidad de Hardware:** Rompí el archivo monolítico y construí Contratos (`.h` protegidos por *include guards*) separados de las Fábricas (`.c`), asimilando que los archivos son completamente ciegos entre sí hasta que el compilador y el Linker los ensamblan.
+*   **Filosofía Defensiva:** Asumí que cualquier dato entrante en una función es radiactivo. Las validaciones contra `NULL` en la primera línea de ejecución son ahora el estándar obligatorio para evitar colapsos catastróficos.
+*   **Pruebas Destructivas:** Dejé de validar código "mirando" la terminal. Ahora construyo cámaras de tortura con `<assert.h>` que fuerzan el código hacia sus límites lógicos y matemáticos.
