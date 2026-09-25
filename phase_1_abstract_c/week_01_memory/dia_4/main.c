@@ -11,5 +11,8 @@ int main(void) {
 
     printf("Resultado temperatura: %d | Estado critico: %d\n", sensor.temperatura, sensor.alerta_critica);
 
+    evaluarTemperatura(NULL, 600);
+
+    printf("\nFin del programa. Sistema a salvo.\n");
     return 0;
 }
